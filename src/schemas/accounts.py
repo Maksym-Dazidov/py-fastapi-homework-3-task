@@ -37,6 +37,7 @@ class TokenRefreshRequestSchema(BaseModel):
 class TokenRefreshResponseSchema(BaseModel):
     access_token: str
 
+
 class UserRegistrationResponseSchema(UserBaseSchema):
     id: int
     is_active: bool
