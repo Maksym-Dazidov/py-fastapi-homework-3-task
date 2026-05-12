@@ -8,13 +8,15 @@ from sqlalchemy.orm import selectinload
 
 from security.passwords import hash_password, verify_password
 from security.utils import generate_secure_token
-from config import get_jwt_auth_manager, get_settings, BaseAppSettings
+from config import get_jwt_auth_manager, get_settings, BaseAppSettings, get_db
 from database import (
+    UserModel,
+    UserGroupModel,
+    UserGroupEnum,
+    ActivationTokenModel,
     PasswordResetTokenModel,
     RefreshTokenModel
 )
-from exceptions import BaseSecurityError
-from exceptions import TokenExpiredError, InvalidTokenError
 from schemas import (
     UserRegistrationResponseSchema,
     UserRegistrationRequestSchema,
@@ -27,6 +29,8 @@ from schemas import (
     TokenRefreshResponseSchema,
     TokenRefreshRequestSchema
 )
+from exceptions import BaseSecurityError
+from exceptions import TokenExpiredError, InvalidTokenError
 from security.interfaces import JWTAuthManagerInterface
 
 router = APIRouter()
