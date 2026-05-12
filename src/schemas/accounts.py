@@ -7,7 +7,7 @@ class UserBaseSchema(BaseModel):
     email: EmailStr
 
 
-class UserRegistrationSchema(UserBaseSchema):
+class UserRegistrationRequestSchema(UserBaseSchema):
     password: str
 
 
