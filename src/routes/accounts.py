@@ -38,7 +38,8 @@ router = APIRouter()
 
 
 @router.post("/register/", status_code=201)
-async def register(user: UserRegistrationRequrstSchema, db: AsyncSession = Depends(get_db), jwt_manager: JWTAuthManagerInterface = Depends(get_jwt_auth_manager)):
+async def register(user: UserRegistrationRequestSchema, db: AsyncSession = Depends(get_db),
+                   jwt_manager: JWTAuthManagerInterface = Depends(get_jwt_auth_manager)):
     db_user = await db.scalar(select(UserModel).where(UserModel.email == user.email))
     access_token = jwt_manager.create_access_token(user.model_dump())
     group = await db.scalar(select(UserGroupModel).where(UserGroupModel.name == UserGroupEnum.USER))
@@ -128,7 +129,7 @@ async def reset_password_complete(user: PasswordResetCompleteSchema, db: AsyncSe
 
 
 @router.post("/login/")
-async def login(user: UserRegistrationSchema, db: AsyncSession = Depends(get_db),
+async def login(user: UserRegistrationRequestSchema, db: AsyncSession = Depends(get_db),
                 jwt_manager: JWTAuthManagerInterface = Depends(get_jwt_auth_manager)):
     db_user = await db.scalar(select(UserModel).where(UserModel.email == user.email))
     if not db_user or not verify_password(user.password, db_user.hashed_password):
