@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from typing import cast
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -8,8 +9,10 @@ from sqlalchemy.orm import selectinload
 
 from security.passwords import hash_password, verify_password
 from security.utils import generate_secure_token
-from config import get_jwt_auth_manager, get_settings, BaseAppSettings, get_db
+
+from config import get_jwt_auth_manager, get_settings, BaseAppSettings
 from database import (
+    get_db,
     UserModel,
     UserGroupModel,
     UserGroupEnum,
@@ -17,6 +20,7 @@ from database import (
     PasswordResetTokenModel,
     RefreshTokenModel
 )
+from exceptions import TokenExpiredError, InvalidTokenError
 from schemas import (
     UserRegistrationResponseSchema,
     UserRegistrationRequestSchema,
@@ -29,8 +33,6 @@ from schemas import (
     TokenRefreshResponseSchema,
     TokenRefreshRequestSchema
 )
-from exceptions import BaseSecurityError
-from exceptions import TokenExpiredError, InvalidTokenError
 from security.interfaces import JWTAuthManagerInterface
 
 router = APIRouter()
